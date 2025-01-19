@@ -8,6 +8,7 @@ This project implements a HomeKit-compatible gate controller using an ESP32 micr
 - ✅ **HomeKit Integration:** Seamless control via the Apple Home app using the HomeSpan library.
 - ✅ **Gate Control:** Open and close the gate with a relay trigger.
 - ✅ **Status Detection:** Real-time detection of gate states (open, closed, opening, closing).
+- ✅ **Gate Status** Detects when gate opens/closes from a different source (e.g. remote control, intercom, keypad).
 
 ## How It Works
 The system uses an ESP32 microcontroller to manage a relay and monitor the gate's operational state:
@@ -25,10 +26,54 @@ The `DEV_GATE.h` class implements:
 - Relay module (for gate control)
 - Logic level converter (5V to 3.3V signal conversion on status pin)
 
+## Wiring
+```
++----------------------+
+|        ESP32         |
+|----------------------|
+| GND  ----------------|-----> **Relay GND, Gate GND, LLC GND** 
+| 3.3V ----------------|-----> LLC LV
+| 5V ------------------|-----> LLC HV, Relay VCC
+| GPIO 35 -------------|-----> Relay IN
+| GPIO 39 <------------|----- LLC LV OUT
++----------------------+
+                                
+                                
++------------------------+ 
+|      RELAY MODULE      |
+|------------------------|
+| IN  <---- GPIO 35      |
+| NO  -----> Gate TRIG   |
+| COM -----> GND         |
+| VCC <---- 5V           |
+| GND <---- GND          |
++------------------------+
+
+
+ +---------------------------+    
+ | LOGIC LEVEL CONVERTER     |    
+ |---------------------------|
+ | HV  <---- 5V              |
+ | LV  <---- 3.3V            |
+ | GND <---- GND             |
+ | HV IN <---- Gate SIG (5V) |
+ | LV OUT ----> GPIO 39      |
+ +---------------------------+  
+
+
++-------------------------+  
+|      GATE MOTOR         |
+|-------------------------|
+| GND  -----> ESP32 GND   |
+| TRIG <----- Relay NO    |
+| SIG  -----> LLC HV IN   |
++-------------------------+
+
+```
 ## Software Requirements
 - [HomeSpan Library](https://github.com/HomeSpan/HomeSpan)
 - Arduino IDE (for programming the ESP32)
-- 
+
 ## Configuration
 - **Wi-Fi:** Set credentials in `main.ino`.
 - **HomeKit Pin:** Default pairing pin is `06533259`.
@@ -42,7 +87,7 @@ The `DEV_GATE.h` class implements:
 5. Pair the device with HomeKit using the code.
 
 ## Future Improvements
-- **Obstruction Detection:** Currently not implemented but could be a future addition for enhanced safety.
+- **Obstruction Detection:** Currently not implemented.
 
 ## License
 This project is open-source under the MIT License.
