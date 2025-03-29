@@ -56,20 +56,30 @@ The `DEV_GATE.h` class implements:
  | HV  <---- 5V              |
  | LV  <---- 3.3V            |
  | GND <---- GND             |
- | HV IN <---- Gate SIG (5V) |
+ | HV IN <---- Gate Status   |
  | LV OUT ----> GPIO 39      |
  +---------------------------+  
 
 
-+-------------------------+  
-|      GATE MOTOR         |
-|-------------------------|
-| GND  -----> ESP32 GND   |
-| TRIG <----- Relay NO    |
-| SIG  -----> LLC HV IN   |
-+-------------------------+
++----------------------------+  
+|         GATE MOTOR         |
+|----------------------------|
+| GND  -----> ESP32 GND      |
+| TRIG <----- Relay NO       |
+| Status  -----> LLC HV IN   |
++----------------------------+
+
+
 
 ```
+![428311938-f44cfe6e-a5c6-495d-8480-1c9bc4ff0227](https://github.com/user-attachments/assets/59c98669-cf6b-4768-b37a-f5637a8d8164)
+
+Only three connections need to be made to the D5 Evo Gate Motor:
+1. Trig: this needs to be connected to ground for the gate to activate. I have connected this to a relay controlled by the ESP32
+2. Status: this needs to be logic-level-converted from 5V to 3.3V. Connect to a GPIO pin of the ESP32
+3. Com (ground, 0V): this is important for two reason: (1) status decoding and (2) triggering (activating) the gate. Because of (1), **the gate must share a ground with the esp32**. 
+
+
 ## Software Requirements
 - [HomeSpan Library](https://github.com/HomeSpan/HomeSpan)
 - Arduino IDE (for programming the ESP32)
