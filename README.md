@@ -24,6 +24,7 @@ The `main.ino` class implements:
 ## Hardware Requirements
 - ESP8266 microcontroller
 - Relay module (for gate control)
+- Buck Converter (Optional if you want to use another source of power)
 - Logic level converter (5V to 3.3V signal conversion on status pin)
 
 ## Wiring
@@ -36,7 +37,7 @@ This section details the connections between the gate motor, logic level convert
 | :------------- | :------------- | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Safe COMMON | -------->      | BUCK CONVERTER IN-  | Use "Safe COM" ground from the gate controller for isolation.                                                             |
 | +12V Out       | -------->      | Buck Converter IN+ | 12V output from the gate motor, used as input for the buck converter.          
-| COM           | <--------      | Relay COM   and COMMON GROUND TO ALL    | Trigger input of the gate motor, connected to the COM terminal of the relay to activate gate movement.                                                                                                                                  |
+| COM           | <--------      | Relay COM   | Trigger input of the gate motor, connected to the COM terminal of the relay to activate gate movement.                                                                                                                                  |
 | Status         | -------->      | LLC HV IN       | Status output from the gate motor (typically 5V), connected to the high-voltage input of the LLC.                                                                   |
 | TRIG           | <--------      | Relay NO        | Trigger input of the gate motor, connected to the Normally Open (NO) terminal of the relay to activate gate movement.                                                |
 
@@ -83,7 +84,7 @@ This section details the connections between the gate motor, logic level convert
 
 **Notes:**
 
-* **Common Ground:** All components share a common ground connection.
+* **Common Ground:** All components share a common ground connection possibly in a .
 * **Buck Converter:** The buck converter efficiently steps down the 12V from the gate motor to 5V (and potentially 3.3V) for the other components.
 * **LLC:** The logic level converter ensures compatibility between the 5V gate status signal and the ESP8266's 3.3V logic.
 * **Relay:** The relay acts as the switch to trigger the gate motor's movement.
