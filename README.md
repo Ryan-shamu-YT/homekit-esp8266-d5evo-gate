@@ -2,7 +2,7 @@
 
 **HomeKit gate controller for Centurion (Centsys) D5 Evo gate motor**
 
-This project implements a HomeKit-compatible gate controller using an ESP32 microcontroller and the HomeSpan library, specifically designed for Centurion (Centsys) D5-Evo gate motors. It enables remote control and status monitoring of the gate with Apple HomeKit.
+This project implements a HomeKit-compatible gate controller using an ESP8266 microcontroller and the Arduino-HomeKit-ESP8266 library, specifically designed for Centurion (Centsys) D5-Evo gate motors. It enables remote control and status monitoring of the gate with Apple HomeKit.
 
 ## Features
 - ✅ **HomeKit Integration:** Seamless control via the Apple Home app using the HomeSpan library.
@@ -11,9 +11,9 @@ This project implements a HomeKit-compatible gate controller using an ESP32 micr
 - ✅ **Gate Status** Detects when gate opens/closes from a different source (e.g. remote control, intercom, keypad).
 
 ## How It Works
-The system uses an ESP32 microcontroller to manage a relay and monitor the gate's operational state:
-- **Relay Control:** The relay pin (GPIO 35) triggers the gate motor.
-- **Status Monitoring:** The status pin (GPIO 39) monitors the gate's operation based on pulse patterns sent by the gate controller.
+The system uses an ESP8266 microcontroller to manage a relay and monitor the gate's operational state:
+- **Relay Control:** The relay pin (GPIO 14) triggers the gate motor.
+- **Status Monitoring:** The status pin (GPIO 12) monitors the gate's operation based on pulse patterns sent by the gate controller.
 - **Flashing Patterns:** The gate signals its state using pulse patterns, where the duration of HIGH and LOW signals indicates whether the gate is opening or closing.
 - **Logic Level Conversion:** A logic level converter is used to shift the gate's 5V status signal to a 3.3V input suitable for the ESP32.
 
