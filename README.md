@@ -47,11 +47,12 @@ This section details the connections between the gate motor, logic level convert
 
 | **LLC** | **Connection** | **Source/Destination** | **Notes** |
 | :------ | :------------- | :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| HV   IN   | <--------      | Gate Motor Status      | Status output from the gate motor (typically 5V).                                                                                                                   |
-| HV   (any channel, if many)   | -------->      | Buck Converter OUT+      | High-voltage side of the LLC, powered by 5V from the buck converter.                                                                                              |
-| LV   (any channel but has to be same as HV)   | -------->      | ESP8266 3.3V             | Low-voltage side of the LLC, powered by the ESP8266's 3.3V output.                                                                                                |
-| LV OUT  | -------->      | ESP8266 GPIO 12          | Logic level converted signal (3.3V), input to the ESP8266's GPIO 12 for gate status monitoring.                                                                       |
-| GND     | -------->      | Common Ground   | Common ground for all components.                                                                                                                                  |
+| HV [NUMBER 1 - 4  ]   | <--------      | Gate Motor Status      | Status output from the gate motor (typically 5V).                                                                                                         |
+| HV   | -------->      | Buck Converter OUT+      | High-voltage side of the LLC, powered by 5V from the buck converter.                                                                                              |
+| GND NEXT TO HV   | -------->      | Buck Converter OUT-      | NEGATIVE END OF THE the BUCK CONVERTER converter.                                                                                              |
+| LV    | -------->      | ESP8266 3.3V             | Low-voltage side of the LLC, powered by the ESP8266's 3.3V output.                                                                                                |
+| GND NEXT TO LV   | -------->      | ESP8266 GND      | High-voltage side of the LLC, powered by 5V from the buck converter.                                                                                              |
+| LV [NUMBER 1 - 4]  | -------->      | ESP8266 GPIO 12          | Logic level converted signal (3.3V), input to the ESP8266's GPIO 12 for gate status monitoring.                                                                       |                                                                                                                               |
 
 ### 3. Relay Module Connections
 
