@@ -69,9 +69,9 @@ This section details the connections between the gate motor, logic level convert
 | **Buck Converter** | **Connection** | **Source/Destination** | **Notes** |
 | :---------------- | :------------- | :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | VIN (+)           | <--------      | Gate Motor +12V Out    | 12V input from the gate motor.                                                                                                                                   |
-| VOUT (+) 5V       | -------->      | LLC HV, Relay VCC      | 5V output, powers the relay module and the high-voltage side of the LLC.                                                                                           |
-| VOUT (+) (Adjusted)| -------->      | ESP8266 Power            | ESP8266 power from buck converter (if adjusted).                                                                                                                     |
-| GND               | -------->      | Common Ground          | Common ground for all components.                                                                                                                                  |
+| VOUT (-) 5V       | -------->      | LLC HV GND, Relay GND      | 5V GROUND,                                                                                  |
+| VOUT (+) (Adjusted)| -------->      | ESP8266 Power. LLC HV, Relay VCC            | power from buck converter (if adjusted).                                                                                                                     |
+| VIN (-)               | -------->      | Common Ground          | Common ground for all components.                                                                                                                                  |
 
 ### 5. ESP8266 Connections
 
