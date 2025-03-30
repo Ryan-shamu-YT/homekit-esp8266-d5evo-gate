@@ -15,63 +15,34 @@ The system uses an ESP8266 microcontroller to manage a relay and monitor the gat
 - **Relay Control:** The relay pin (GPIO 14) triggers the gate motor.
 - **Status Monitoring:** The status pin (GPIO 12) monitors the gate's operation based on pulse patterns sent by the gate controller.
 - **Flashing Patterns:** The gate signals its state using pulse patterns, where the duration of HIGH and LOW signals indicates whether the gate is opening or closing.
-- **Logic Level Conversion:** A logic level converter is used to shift the gate's 5V status signal to a 3.3V input suitable for the ESP32.
+- **Logic Level Conversion:** A logic level converter is used to shift the gate's 5V status signal to a 3.3V input suitable for the ESP8266.
 
-The `DEV_GATE.h` class implements:
+The `main.ino` class implements:
 - `update()` – Triggered by HomeKit to open/close the gate.
 - `loop()` – Continuously monitors the gate's state based on the input pin.
 
 ## Hardware Requirements
-- ESP32 microcontroller
+- ESP8266 microcontroller
 - Relay module (for gate control)
 - Logic level converter (5V to 3.3V signal conversion on status pin)
 
 ## Wiring
-```
-+----------------------+
-|        ESP32         |
-|----------------------|
-| GND  ----------------|-----> **Relay GND, Gate GND, LLC GND** 
-| 3.3V ----------------|-----> LLC LV
-| 5V ------------------|-----> LLC HV, Relay VCC
-| GPIO 35 -------------|-----> Relay IN
-| GPIO 39 <------------|----- LLC LV OUT
-+----------------------+
-                                
-                                
-+------------------------+ 
-|      RELAY MODULE      |
-|------------------------|
-| IN  <---- GPIO 35      |
-| NO  -----> Gate TRIG   |
-| COM -----> GND         |
-| VCC <---- 5V           |
-| GND <---- GND          |
-+------------------------+
 
-
- +---------------------------+    
- | LOGIC LEVEL CONVERTER     |    
- |---------------------------|
- | HV  <---- 5V              |
- | LV  <---- 3.3V            |
- | GND <---- GND             |
- | HV IN <---- Gate Status   |
- | LV OUT ----> GPIO 39      |
- +---------------------------+  
-
-
-+----------------------------+  
-|         GATE MOTOR         |
-|----------------------------|
-| GND  -----> ESP32 GND      |
-| TRIG <----- Relay NO       |
-| Status  -----> LLC HV IN   |
-+----------------------------+
+| **ESP8266** | **Connection** | **Relay Module** | **Logic Level Converter (LLC)** | **Gate Motor** | **Notes** |
+| :--------- | :------------- | :--------------- | :----------------------------- | :------------- | :----------------------------------------------------------------------------- |
+| GND        | -------->      | GND              | GND                            | GND            | Common ground connection for all components.                                    |
+| 3.3V       | -------->      |                  | LV                             |                | Power supply for the low-voltage side of the LLC.                               |
+| 5V         | -------->      | VCC              | HV                             |                | Power supply for the relay module and the high-voltage side of the LLC.         |
+| GPIO 35    | -------->      | IN               |                                |                | Control signal from ESP32 to activate the relay.                               |
+| GPIO 39    | <--------      |                  | LV OUT                         |                | Status signal from the gate motor (converted by LLC) to the ESP32.              |
+|            |                | NO               |                                | TRIG           | Normally Open (NO) contact of the relay, connected to the gate motor's trigger. |
+|            |                | COM              |                                |                | Connected to GND                                                              |
+|            |                |                  | HV IN                          | Status         | Gate motor's status output, connected to the high-voltage input of the LLC. |
 
 
 
-```
+
+
 ![428311938-f44cfe6e-a5c6-495d-8480-1c9bc4ff0227](https://github.com/user-attachments/assets/59c98669-cf6b-4768-b37a-f5637a8d8164)
 
 Only three connections need to be made to the D5 Evo Gate Motor:
@@ -81,19 +52,19 @@ Only three connections need to be made to the D5 Evo Gate Motor:
 
 
 ## Software Requirements
-- [HomeSpan Library](https://github.com/HomeSpan/HomeSpan)
-- Arduino IDE (for programming the ESP32)
+- [Arduino-HomeKit-ESP8266](https://github.com/Mixiaoxiao/Arduino-HomeKit-ESP8266)
+- Arduino IDE (for programming the ESP8266)
 
 ## Configuration
-- **Wi-Fi:** Set credentials in `main.ino`.
-- **HomeKit Pin:** Default pairing pin is `06533259`.
+- **Wi-Fi:** Set credentials in `wifi_info.h`.
+- **HomeKit Pin:** Default pairing pin is `11111111 (8 ones)`.
 - **Pins:** Adjust `statusPin` and `relayPin` if necessary.
   
 ## Installation
 1. Install the HomeSpan library in Arduino IDE.
-2. Download and open both `main.ino` and `DEV_GATE.h` in an IDE.
-3. Configure Wi-Fi credentials, HomeKit pairing code in `main.ino`.
-4. Upload the files to your ESP32.
+2. Download and open both `main.ino`, `my_accessory.c ` and `wifi_info.h` in an IDE.
+3. Configure Wi-Fi credentials in `wifi_info.h`, HomeKit pairing code in `my_accessory.c`.
+4. Upload the files to your ESP8266.
 5. Pair the device with HomeKit using the code.
 
 ## Future Improvements
